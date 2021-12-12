@@ -1,70 +1,28 @@
-# Getting Started with Create React App
+# Mario Kart Tournament Scheduler
+[See it live here](https://mkts.ethanr.co.uk)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A simple web app that schedules a Mario Kart (or other game) tournament from a list of names,
+in an effort to be short, while being as fair as possible.
 
-## Available Scripts
+If the players were willing, they could play all possible combinations of players. However, even 7 players with 4 per game would involve 35 games total. This is impractical.
+This web app aims to outline a tournament with the same number of games as players (e.g. 7 players, with 7 games total), while maintaining fairness as much as possible. 
 
-In the project directory, you can run:
 
-### `yarn start`
+Fairness is defined as being as close as possible to the following 2 criterion:
+1) Everyone plays the same amount of games
+2) Everyone plays every other person the same amount of times
+3) Everyone's games are spread out across the session
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+The first criterion has been prioritised to **always** be true.
+However, it is not always possible for every player to play every other the same number of times.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+The algorithm that was created works by generating a *"**kernel**"* for the first game, then "rotating" through the players.
+By generating the kernel in different ways, you can change the distribution of games. 
 
-### `yarn test`
+![Image](example_algorithm.jpg)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+It was found that by spacing the games out using triangle numbers (0,1,3,6,10,etc), games were optimal. This is because it covers every possible "spacing" between players.
 
-### `yarn build`
+For example, in the image above, game 1 has the 0th, 1st, 3rd and 6th players. Following games simply rotate the previous games by 1.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+In cases where the number of players is not a triangle number, the kernel must be padded with 0s.
